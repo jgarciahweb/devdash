@@ -1,0 +1,65 @@
+<app-card title="Tablero de Enfoque (Kanban)">
+
+  <div class="flex gap-2 mb-6">
+    <input
+      type="text"
+      [(ngModel)]="newTask"
+      placeholder="Nueva tarea de desarrollo..."
+      class="flex-1 px-3 py-2 text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-800 dark:text-slate-100"
+      (keyup.enter)="addTask()"
+    />
+    <app-button variant="primary" size="sm" (btnClick)="addTask()">Añadir</app-button>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4" cdkDropListGroup>
+
+    <div class="bg-slate-50 dark:bg-slate-900/40 p-3 rounded-xl border border-slate-100 dark:border-slate-800">
+      <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 px-1">Por Hacer ({{ todo().length }})</h4>
+
+      <div
+        id="todo-list"
+        cdkDropList
+        [cdkDropListData]="todo()"
+        [cdkDropListConnectedTo]="['done-list']"
+        (cdkDropListDropped)="drop($event)"
+        class="space-y-2 min-h-[150px]"
+      >
+        <div
+          *ngFor="let task of todo(); let i = index"
+          cdkDrag
+          class="p-3 bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-100 dark:border-slate-700/60 text-sm flex justify-between items-center cursor-grab active:cursor-grabbing transition-colors group"
+        >
+          <span>{{ task }}</span>
+          <button (click)="deleteTask('todo', i)" class="text-slate-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity">
+            ✕
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-slate-50 dark:bg-slate-900/40 p-3 rounded-xl border border-slate-100 dark:border-slate-800">
+      <h4 class="text-xs font-bold text-emerald-500 dark:text-emerald-400 uppercase tracking-wider mb-3 px-1">Completado ({{ done().length }})</h4>
+
+      <div
+        id="done-list"
+        cdkDropList
+        [cdkDropListData]="done()"
+        [cdkDropListConnectedTo]="['todo-list']"
+        (cdkDropListDropped)="drop($event)"
+        class="space-y-2 min-h-[150px]"
+      >
+        <div
+          *ngFor="let task of done(); let i = index"
+          cdkDrag
+          class="p-3 bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-slate-100 dark:border-slate-700/60 text-sm flex justify-between items-center cursor-grab active:cursor-grabbing line-through text-slate-400 group"
+        >
+          <span>{{ task }}</span>
+          <button (click)="deleteTask('done', i)" class="text-slate-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity">
+            ✕
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</app-card>

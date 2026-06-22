@@ -1,0 +1,46 @@
+<app-card title="Últimos Repositorios GitHub">
+
+  <div *ngIf="reposQuery.isPending()" class="space-y-3 animate-pulse">
+    <div class="h-4 bg-slate-200 dark:bg-slate-700 rounded w-3/4"></div>
+    <div class="h-3 bg-slate-200 dark:bg-slate-700 rounded w-1/2"></div>
+    <div class="h-4 bg-slate-200 dark:bg-slate-700 rounded w-5/6"></div>
+  </div>
+
+  <div *ngIf="reposQuery.isError()" class="text-center py-4">
+    <p class="text-sm text-red-500 font-medium">No se pudieron cargar los repositorios.</p>
+    <p class="text-xs text-slate-400 mt-1">Verifica el nombre de usuario o tu conexión.</p>
+  </div>
+
+  <div *ngIf="reposQuery.data() as repos" class="divide-y divide-slate-100 dark:divide-slate-700/50">
+    <div *ngFor="let repo of repos" class="py-3 first:pt-0 last:pb-0 group">
+      <div class="flex items-center justify-between">
+        <a
+          [href]="repo.html_url"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-sm font-medium text-blue-600 dark:text-blue-400 hover:underline group-hover:text-blue-700"
+        >
+          {{ repo.name }}
+        </a>
+
+        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-amber-50 text-amber-700 border border-amber-200 dark:bg-amber-500/10 dark:text-amber-400 dark:border-amber-500/20">
+          ⭐ {{ repo.stargazers_count }}
+        </span>
+      </div>
+
+      <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 line-clamp-2">
+        {{ repo.description || 'Sin descripción disponible.' }}
+      </p>
+
+      <div class="mt-2 flex items-center gap-2" *ngIf="repo.language">
+        <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+        <span class="text-[11px] text-slate-400 font-medium">{{ repo.language }}</span>
+      </div>
+    </div>
+
+    <p *ngIf="repos.length === 0" class="text-sm text-slate-400 text-center py-4">
+      Este usuario no tiene repositorios públicos.
+    </p>
+  </div>
+
+</app-card>

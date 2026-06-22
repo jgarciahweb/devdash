@@ -1,1 +1,9 @@
 @import "tailwindcss";
+
+/* Configuración de Modo Oscuro para Tailwind v4 */
+@theme {
+  /* Si quieres personalizar colores oscuros específicos, irían aquí */
+}
+
+/* Forzamos a que busque la clase .dark en el elemento raíz (html) */
+@variant dark (&:where(.dark, .dark *));

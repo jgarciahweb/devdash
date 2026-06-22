@@ -12,18 +12,29 @@ export interface WeatherData {
   };
 }
 
+export interface LocationData {
+  city: string;
+  principalSubdivision: string;
+  countryName: string;
+}
+
 @Injectable({
   providedIn: 'root' // 💥 Esto hace que el servicio sea inyectable globalmente en toda la app
 })
 export class Weather {
   private http = inject(HttpClient);
   private baseUrl = 'https://api.open-meteo.com/v1/forecast';
+  private geoUrl = 'https://api.bigdatacloud.net/data/reverse-geocode-client';
 
   // Obtenemos el clima actual usando latitud y longitud
   getWeather(lat: number, lon: number): Observable<WeatherData> {
     return this.http.get<WeatherData>(
       `${this.baseUrl}?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,is_day,weather_code,wind_speed_10m`
     );
+  }
+
+  getLocationName(lat: number, lon: number): Observable<LocationData> {
+    return this.http.get<LocationData>(`${this.geoUrl}?latitude=${lat}&longitude=${lon}&localityLanguage=es`);
   }
 
   // Intérprete simple de códigos WMO (Weather Interpretation Codes)

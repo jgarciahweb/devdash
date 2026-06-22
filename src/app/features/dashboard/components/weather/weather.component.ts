@@ -1,9 +1,15 @@
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
-import { Weather, WeatherData } from '../../../../core/services/weather'; // 💥 Asegúrate de importar la interfaz WeatherData si está ahí
-import { injectQuery } from '@tanstack/angular-query-experimental';
+import { Component, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { injectQuery } from '@tanstack/angular-query-experimental';
+import { Weather, WeatherData, LocationData } from '../../../../core/services/weather'; // 💥 Importamos LocationData
 import { CardComponent } from '../../../../shared/components/card/card.component';
 import { firstValueFrom } from 'rxjs';
+
+// Creamos una interfaz combinada para el resultado de nuestra Query
+interface FullWeatherData {
+  weather: WeatherData;
+  location: LocationData;
+}
 
 @Component({
   selector: 'app-weather',
@@ -12,18 +18,27 @@ import { firstValueFrom } from 'rxjs';
   styleUrl: './weather.component.scss',
 })
 export class WeatherComponent implements OnInit {
-  // Ponemos public para que el HTML pueda usar métodos como weatherService.getWeatherDescription()
   public weatherService = inject(Weather);
 
   coords = signal<{ lat: number; lon: number } | null>(null);
   geoError = signal<string | null>(null);
 
-  // 💥 Añadimos <WeatherData> aquí para decirle a TypeScript exactamente qué guarda la Query en su .data()
-  weatherQuery = injectQuery<WeatherData>(() => ({
+  // 💥 Actualizamos el tipo genérico a <FullWeatherData>
+  weatherQuery = injectQuery<FullWeatherData>(() => ({
     queryKey: ['weather', this.coords()],
     queryFn: async () => {
       const position = this.coords();
-      return await firstValueFrom(this.weatherService.getWeather(position!.lat, position!.lon));
+
+      // Lanzamos ambas peticiones HTTP en paralelo con promesas
+      const [weatherRes, locationRes] = await Promise.all([
+        firstValueFrom(this.weatherService.getWeather(position!.lat, position!.lon)),
+        firstValueFrom(this.weatherService.getLocationName(position!.lat, position!.lon))
+      ]);
+
+      return {
+        weather: weatherRes,
+        location: locationRes
+      };
     },
     enabled: !!this.coords(),
     staleTime: 1000 * 60 * 15,

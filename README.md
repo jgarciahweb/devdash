@@ -1,33 +1,33 @@
-# 🚀 DevDash – Dashboard de Productividad para Desarrolladores
+# ⚡ DevDash Workspace
 
-**DevDash** es un panel de control personalizable diseñado específicamente para desarrolladores. Centraliza tus repositorios de GitHub, tareas pendientes, temporizador Pomodoro y datos meteorológicos locales en una única interfaz unificada, modular y de alto rendimiento.
+Un dashboard de productividad personal y entorno de trabajo avanzado para desarrolladores, construido con **Angular 19+**, **Signals** y **Tailwind CSS v4.0**.
 
-Este proyecto ha sido desarrollado con un enfoque **100% Frontend (Avanzado)** para demostrar el dominio de arquitecturas modernas en Angular, sistemas de diseño escalables y optimización del estado del servidor.
+Este proyecto ha sido diseñado bajo la metodología de desarrollo guiado por componentes (Component-Driven Development) y utiliza **TanStack Query** para una gestión de estado del servidor ultra eficiente, optimizando el rendimiento mediante el uso de caché avanzada y peticiones asíncronas optimizadas.
 
----
+## 🚀 Características Principales
+
+* **GitHub Widget:** Sincronización en tiempo real con la API pública de GitHub. Permite buscar cualquier perfil dinámicamente y expone los últimos repositorios con sus respectivas métricas (estrellas, lenguajes, etc.).
+* **Weather Widget (Geolocalización Inversa):** Consume la API nativa de geolocalización del navegador para detectar la ubicación actual del usuario y combina datos asíncronos mediante `Promise.all` para renderizar el nombre de la localidad y sus condiciones climatológicas en tiempo real (con un plan de contingencia elegante si los permisos son denegados).
+* **Tablero Kanban Interactivo:** Gestión de tareas pendientes mediante arrastrar y soltar utilizando `@angular/cdk/drag-drop` y persistencia de datos local transparente en el dispositivo (`localStorage`) implementada mediante efectos reactivos.
+* **Pomodoro Timer:** Temporizador reactivo para la gestión del tiempo de enfoque y descanso con estados computados matemáticos y formateo dinámico de reloj en formato `MM:SS`.
+* **Estrategia Dark Mode Nativa:** Diseñado con la arquitectura moderna de **Tailwind CSS v4.0** basada en variables de CSS puras y un servicio global reactivo que memoriza las preferencias estéticas del usuario.
 
 ## 🛠️ Stack Tecnológico
 
-*   **Framework:** Angular (v17+) – Utilizando *Signals* para una reactividad fina, flujo de datos optimizado y *Standalone Components*.
-*   **Estilos y UI:** TailwindCSS – Sistema de diseño ágil, totalmente personalizado y con soporte nativo para Modo Oscuro.
-*   **Aislamiento de Componentes:** Storybook – Desarrollo y documentación de componentes atómicos de forma aislada antes de su integración.
-*   **Gestión de Estado y Servidor:** `@tanstack/angular-query` (TanStack Query) – Manejo eficiente de la caché, sincronización en segundo plano y estados de carga/error de las APIs.
-*   **Iconografía:** Lucide Angular – Pack de iconos consistente y optimizado para *tree-shaking*.
+* **Framework:** Angular (Standalone Components + Signals)
+* **Estilos:** Tailwind CSS v4.0 (Configuración nativa CSS y directivas `@theme`)
+* **Gestión de Datos/Servidor:** TanStack Query (Angular Query Experimental)
+* **Interactividad:** Angular CDK (Drag & Drop)
+* **Control de Estado:** Sólido uso de `signal()`, `computed()` y `effect()`.
 
----
+## 📦 Instalación y Despliegue Local
 
-## 🏗️ Arquitectura del Proyecto
-
-El proyecto sigue un patrón **Feature-First** (por funcionalidades) combinado con diseño atómico en la carpeta compartida, facilitando la escalabilidad del código.
-
-```text
-src/
-├── app/
-│   ├── core/               # Guardianes, interceptores y servicios globales únicos
-│   ├── shared/             # Sistema de diseño (Componentes atómicos reutilizables)
-│   │   └── components/
-│   │       └── button/     # Componente e historia de Storybook vinculada
-│   └── features/           # Módulos y lógica de negocio por funcionalidad
-│       ├── dashboard/      # Layout principal del panel
-│       ├── github-widget/  # Widget con conexión a API de GitHub
-│       └── pomodoro/       # Widget de productividad (Temporizador)
+1. Clona el repositorio:
+   ```bash
+   git clone [https://github.com/jgarciahweb/devdash.git](https://github.com/jgarciahweb/devdash.git)
+2. Instala las dependencias
+  ```bash
+  npm install
+3. Inicia el servidor de desarrollo
+  ```bash
+  npm start
